@@ -1,0 +1,175 @@
+import 'package:flutter/material.dart';
+
+var beerData = [
+  {
+    "name": "La Fin Du Monde",
+    "style": "Bock",
+    "ibu": "65"
+  },
+  {
+    "name": "Sapporo Premiume",
+    "style": "Sour Ale",
+    "ibu": "54"
+  },
+  {
+    "name": "Duvel",
+    "style": "Pilsner",
+    "ibu": "82"
+  },
+  {
+    "name": "Guinness",
+    "style": "Stout",
+    "ibu": "45"
+  },
+  {
+    "name": "Heineken",
+    "style": "Lager",
+    "ibu": "19"
+  },
+  {
+    "name": "Corona",
+    "style": "Pale Lager",
+    "ibu": "18"
+  },
+  {
+    "name": "Budweiser",
+    "style": "Lager",
+    "ibu": "12"
+  },
+  {
+    "name": "Blue Moon",
+    "style": "Wheat Ale",
+    "ibu": "9"
+  }
+];
+
+var countryData = [
+  {
+    "country": "Brazil",
+    "capital": "Brasília",
+    "population": "211 million"
+  },
+  {
+    "country": "Canada",
+    "capital": "Ottawa",
+    "population": "38 million"
+  },
+  {
+    "country": "Japan",
+    "capital": "Tokyo",
+    "population": "126 million"
+  },
+  {
+    "country": "Germany",
+    "capital": "Berlin",
+    "population": "83 million"
+  },
+  {
+    "country": "Australia",
+    "capital": "Canberra",
+    "population": "25 million"
+  }
+];
+
+void main() {
+  MyApp app = MyApp();
+  runApp(app);
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(primarySwatch: Colors.deepPurple),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("Dicas"),
+        ),
+        body: SingleChildScrollView(
+          child: DataBodyWidget(
+            objects: beerData,
+            columnNames: ["Name", "Style", "IBU"],
+            propertyNames: ["name", "style", "ibu"],
+          ),
+        ),
+        bottomNavigationBar: NewNavBar(),
+      ),
+    );
+  }
+}
+
+class NewNavBar extends StatelessWidget {
+  NewNavBar();
+
+  void botaoFoiTocado(int index) {
+    print("Tocaram no botão $index");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      onTap: botaoFoiTocado,
+      items: const [
+        BottomNavigationBarItem(
+          label: "Cafés",
+          icon: Icon(Icons.coffee_outlined),
+        ),
+        BottomNavigationBarItem(
+            label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
+        BottomNavigationBarItem(label: "Nações", icon: Icon(Icons.flag_outlined))
+      ],
+    );
+  }
+}
+
+class DataBodyWidget extends StatelessWidget {
+  final List objects;
+  final List<String> columnNames;
+  final List<String> propertyNames;
+
+  DataBodyWidget({
+    this.objects = const [],
+    required this.columnNames,
+    required this.propertyNames,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DataTable(
+      columns: columnNames.map(
+        (name) => DataColumn(
+          label: Expanded(
+            child: Text(name, style: TextStyle(fontStyle: FontStyle.italic)),
+          ),
+        ),
+      ).toList(),
+      rows: objects.map(
+        (obj) => DataRow(
+          cells: propertyNames.map(
+            (propName) => DataCell(Text(obj[propName])),
+          ).toList(),
+        ),
+      ).toList(),
+    );
+  }
+}
+
+class MyTileWidget extends StatelessWidget {
+  final List objects;
+  MyTileWidget({this.objects = const []});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: objects.length,
+      itemBuilder: (context, index) {
+        var obj = objects[index];
+        return ListTile(
+          title: Text(obj["name"]),
+          subtitle: Text("${obj["style"]} - IBU: ${obj["ibu"]}"),
+        );
+      },
+    );
+  }
+}
