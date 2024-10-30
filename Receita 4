@@ -1,3 +1,5 @@
+Feito com ajuda do: https://copilot.microsoft.com/
+
 import 'package:flutter/material.dart';
 
 var beerData = [
