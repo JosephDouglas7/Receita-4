@@ -1,4 +1,4 @@
-Feito com ajuda do: https://copilot.microsoft.com/
+Feito com ajuda do copilot para correção de erros de copilação: https://copilot.microsoft.com/
 
 import 'package:flutter/material.dart';
 
